@@ -6,6 +6,8 @@ const plus = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
 
+number.innerText = 0;
+
 // store에 전달할 함수 생성
 const countModifier = (count = 0, action) => {  // initialize state
   // console.log(count, action); // 0 {type: "@@redux/INITl.9.7.q.0.g"}
@@ -20,10 +22,13 @@ const countModifier = (count = 0, action) => {  // initialize state
 
 // 함수를 전달받아야 한다.
 const countStore = createStore(countModifier);
+
+const onChange = () => {
+  number.innerText = countStore.getState();
+}
+// store의 변화 감지용
+countStore.subscribe(onChange);
 // console.log(countStore); // dispatch, subscribe, getState, replaceReducer, Symbol 정보
 
-//call store action
-countStore.dispatch({type: "ADD"});
-countStore.dispatch({type: "MINUS"});
-
-console.log(countStore.getState());
+plus.addEventListener("click", () => countStore.dispatch({type: "ADD"}));
+minus.addEventListener("click", () => countStore.dispatch({type: "MINUS"}));
